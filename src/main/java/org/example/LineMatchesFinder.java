@@ -43,7 +43,7 @@ public class LineMatchesFinder {
             }
 
         }
-        System.out.println("values" + matchesSets);
+      //  System.out.println("values" + matchesSets);
 
         return matchesSets;
     }

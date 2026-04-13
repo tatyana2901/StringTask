@@ -19,7 +19,7 @@ public class Main {
         LineMatchesFinder finder = new LineMatchesFinder(uniqueStr);
         List<Set<String>> lineMatches = finder.findMatches();
         List<Set<String>> mergedGroups = GroupMerger.mergeWithUnionFind(lineMatches);
-        System.out.println(mergedGroups + "" + mergedGroups.size() + " ");
+      //  System.out.println(mergedGroups + "" + mergedGroups.size() + " ");
 
         long endTime = System.currentTimeMillis();
         long endMemory = runtime.totalMemory() - runtime.freeMemory();

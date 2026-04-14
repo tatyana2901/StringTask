@@ -14,7 +14,7 @@ public class ResultMaker {
 
     static final String OUTPUTFILE = "groups_output.txt";
 
-    public static void writeGroups(List<Set<Integer>> mergedGroups, List<String[]> uniqueStr) {
+    public static void writeGroups(List<Set<Integer>> mergedGroups, List<String[]> inputData) {
         Path outputPath = Paths.get(OUTPUTFILE);
 
         try (BufferedWriter writer = Files.newBufferedWriter(outputPath, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
@@ -27,7 +27,7 @@ public class ResultMaker {
                 writer.write("Группа " + ++k);
                 writer.newLine();
                 for (Integer i : mergedGroup) {
-                    writer.write(String.join(";", uniqueStr.get(i)));
+                    writer.write(String.join(";", inputData.get(i)));
                     writer.newLine();
                 }
             }

@@ -1,11 +1,15 @@
 package org.example;
 
-import java.util.*;
-import java.util.function.ToIntFunction;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class LineMatchesFinder {
 
-    private List<String[]> strings = new ArrayList<>();
+    private List<String[]> strings;
 
     public LineMatchesFinder(List<String[]> strings) {
         this.strings = strings;
@@ -19,33 +23,28 @@ public class LineMatchesFinder {
         }
 
         List<Set<Integer>> matchesSets = new ArrayList<>();
-        Map<String, Set<Integer>> stringNumbers = new HashMap<>(); //мапа k - значение строки itemValue , v - номер строки j
+
+        Map<String, Set<Integer>> stringNumbers = new HashMap<>();
+
         for (int i = 0; i < getLongestStringSize(); i++) {
             stringNumbers.clear();
 
             for (int j = 0; j < strings.size(); j++) {
-                String[] line = strings.get(j);  // получили строку
-                if (i < line.length) {                //проверка что i не выходит за пределы размера текущей строки + добавить условие непустого значения
-                    String itemValue = line[i]; // получили элемент строки в текущем столбце i
-                    if (itemValue.equals("\"\"")) {//если значение вида "" - пропускем его
+                String[] line = strings.get(j);
+                if (i < line.length) {
+                    String itemValue = line[i];
+                    if (itemValue.equals("\"\"")) {
                         continue;
                     }
-
-                    Set<Integer> matches = stringNumbers.get(itemValue);
-                    if (matches == null) {
-                        matches = new HashSet<>();
-                        stringNumbers.put(itemValue, matches);
-                    }
+                    Set<Integer> matches = stringNumbers.computeIfAbsent(itemValue, k -> new HashSet<>());
                     matches.add(j);
                 }
-
             }
-            for (Set<Integer> matches : stringNumbers.values()) {// добавили множество всех совпадений (более 1 элемента в сете совпадений) значений по колонке
+            for (Set<Integer> matches : stringNumbers.values()) {
                 if (matches.size() > 1) {
                     matchesSets.add(matches);
                 }
             }
-
         }
         return matchesSets;
     }

@@ -1,63 +1,43 @@
 package org.example;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
-        long startTime1 = System.currentTimeMillis();
-        Runtime runtime1 = Runtime.getRuntime();
-        long startMemory1 = runtime1.totalMemory() - runtime1.freeMemory();
-        //    ("C:\\Users\\anisi\\Downloads\\lng-4.txt.gz");
-        FileParser parser = new FileParser("C:\\Users\\tanisimova\\Downloads\\lng-4.txt.gz");
-        List<String[]> uniqueStr = parser.getUniqueLines(); //!!!
+        if (args.length == 0) {
+            System.err.println("Не указан путь к файлу");
+            System.exit(1);
+        }
 
-        LineMatchesFinder finder = new LineMatchesFinder(uniqueStr); //!!!
+        String filePath = args[0];
 
+        long startTime = System.currentTimeMillis();
+        Runtime runtime = Runtime.getRuntime();
+        long startMemory = runtime.totalMemory() - runtime.freeMemory();
 
-        List<Set<Integer>> lineMatches = finder.findMatches(); //номера совпадающих строк в рамках одного столбца
+        FileParser parser = new FileParser(filePath);
+        List<String[]> inputData = parser.getInputStrings();
 
-        List<Set<Integer>> mergedGroups = GroupMerger.mergeWithUnionFind(lineMatches); //Номера строк, которые объединены в итоговые множества
+        LineMatchesFinder finder = new LineMatchesFinder(inputData);
 
-        ResultMaker.writeGroups(mergedGroups, uniqueStr);
+        List<Set<Integer>> lineMatches = finder.findMatches();
 
-       long endTime6 = System.currentTimeMillis();
-        long endMemory6 = runtime1.totalMemory() - runtime1.freeMemory();
+        List<Set<Integer>> mergedGroups = GroupMerger.mergeWithUnionFind(lineMatches);
 
-        /*System.out.println("\n=== РЕЗУЛЬТАТЫ ВЫПОЛНЕНИЯ ===");
-         System.out.printf(" Время: %.3f сек%n", (endTime1 - startTime1) / 1000.0);
-        System.out.printf(" Память: %d MB%n", (endMemory1 - startMemory1) / (1024 * 1024));
-        System.out.printf(" Всего использовано: %d MB%n", endMemory1 / (1024 * 1024));
-*/
+        ResultMaker.writeGroups(mergedGroups, inputData);
 
-       /* System.out.println("\n=== РЕЗУЛЬТАТЫ ВЫПОЛНЕНИЯ 2 ===");
-        System.out.printf(" Время: %.3f сек%n", (endTime2 - startTime2) / 1000.0);
-        System.out.printf(" Память: %d MB%n", (endMemory2 - startMemory2) / (1024 * 1024));
-        System.out.printf(" Всего использовано: %d MB%n", endMemory2 / (1024 * 1024));
-
-        System.out.println("\n=== РЕЗУЛЬТАТЫ ВЫПОЛНЕНИЯ 3===");
-        System.out.printf(" Время: %.3f сек%n", (endTime3 - startTime3) / 1000.0);
-        System.out.printf(" Память: %d MB%n", (endMemory3 - startMemory3) / (1024 * 1024));
-        System.out.printf(" Всего использовано: %d MB%n", endMemory3 / (1024 * 1024));
-
-        System.out.println("\n=== РЕЗУЛЬТАТЫ ВЫПОЛНЕНИЯ 4===");
-        System.out.printf(" Время: %.3f сек%n", (endTime4 - startTime4) / 1000.0);
-        System.out.printf(" Память: %d MB%n", (endMemory4 - startMemory4) / (1024 * 1024));
-        System.out.printf(" Всего использовано: %d MB%n", endMemory4 / (1024 * 1024));
+        long endTime = System.currentTimeMillis();
+        long endMemory = runtime.totalMemory() - runtime.freeMemory();
 
 
-        System.out.println("\n=== РЕЗУЛЬТАТЫ ВЫПОЛНЕНИЯ 5===");
-        System.out.printf(" Время: %.3f сек%n", (endTime5 - startTime5) / 1000.0);
-        System.out.printf(" Память: %d MB%n", (endMemory5 - startMemory5) / (1024 * 1024));
-        System.out.printf(" Всего использовано: %d MB%n", endMemory5 / (1024 * 1024));*/
-
-        System.out.println("\n=== РЕЗУЛЬТАТЫ ВЫПОЛНЕНИЯ ИТОГО===");
-        System.out.printf(" Время: %.3f сек%n", (endTime6 - startTime1) / 1000.0);
-        System.out.printf(" Память: %d MB%n", (endMemory6 - startMemory1) / (1024 * 1024));
-        System.out.printf(" Всего использовано: %d MB%n", endMemory6 / (1024 * 1024));
+        System.out.println("РЕЗУЛЬТАТЫ ВЫПОЛНЕНИЯ:");
+        System.out.printf(" Время: %.3f сек%n", (endTime - startTime) / 1000.0);
+        System.out.printf(" Память: %d MB%n", (endMemory - startMemory) / (1024 * 1024));
+        System.out.printf(" Всего использовано: %d MB%n", endMemory / (1024 * 1024));
     }
 
 

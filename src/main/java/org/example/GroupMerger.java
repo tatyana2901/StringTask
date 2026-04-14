@@ -1,6 +1,14 @@
 package org.example;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class GroupMerger {
 
@@ -31,7 +39,8 @@ public class GroupMerger {
         }
 
         List<Set<Integer>> resultList = new ArrayList<>(components.values());
-        resultList.sort((o1, o2) -> o2.size() - o1.size());
+        resultList.sort(Comparator.<Set<Integer>>comparingInt(Set::size).reversed());
+
         return resultList;
     }
 

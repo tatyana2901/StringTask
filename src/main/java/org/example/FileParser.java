@@ -1,6 +1,7 @@
 package org.example;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -23,8 +24,9 @@ public class FileParser {
         Set<String> uniqueStrings = new HashSet<>();
         List<String[]> dataArrays = new ArrayList<>();
 
-        try (GZIPInputStream gzipStream = new GZIPInputStream(Files.newInputStream(Paths.get(filePath)));
-             BufferedReader reader = new BufferedReader(new InputStreamReader(gzipStream))) {
+        try (InputStream is = Files.newInputStream(Paths.get(filePath));
+             InputStream decompressed = filePath.endsWith(".gz") ? new GZIPInputStream(is) : is;
+             BufferedReader reader = new BufferedReader(new InputStreamReader(decompressed))) {
 
             String line;
 
@@ -33,15 +35,15 @@ public class FileParser {
                 if (!uniqueStrings.add(line)) {
                     continue;
                 }
-                dataArrays.add(line.split(";"));
+                dataArrays.add(line.split(";", -1));
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println("Ошибка чтения: " + e.getMessage());
         }
 
         return dataArrays;
     }
-
 
 }

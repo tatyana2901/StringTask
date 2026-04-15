@@ -33,7 +33,8 @@ public class LineMatchesFinder {
                 String[] line = strings.get(j);
                 if (i < line.length) {
                     String itemValue = line[i];
-                    if (itemValue.equals("\"\"")) {
+
+                    if (isEmptyValue(itemValue)) {
                         continue;
                     }
                     Set<Integer> matches = stringNumbers.computeIfAbsent(itemValue, k -> new HashSet<>());
@@ -47,6 +48,16 @@ public class LineMatchesFinder {
             }
         }
         return matchesSets;
+    }
+
+    private boolean isEmptyValue(String value) {
+        if (value == null) return true;
+
+        value = value.trim();
+
+        return value.isEmpty() ||
+                value.equals("\"\"");
+
     }
 
     private long getLongestStringSize() {
